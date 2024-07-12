@@ -1,0 +1,38 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: your-project-id
+        export_default_credentials: true
+
+    - name: Build Docker image
+      run: |
+        docker build -t europe-west2-docker.pkg.dev/eighth-radio-428308-s7/my-repo/mydjangoapp:latest .
+
+    - name: Push Docker image
+      run: |
+        docker push europe-west2-docker.pkg.dev/eighth-radio-428308-s7/my-repo/mydjangoapp:latest
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy mydjangoapp-service \
+            --image europe-west2-docker.pkg.dev/eighth-radio-428308-s7/my-repo/mydjangoapp:latest \
+            --platform managed \
+            --region europe-west2 \
+            --allow-unauthenticated \
+            --timeout=1200s
