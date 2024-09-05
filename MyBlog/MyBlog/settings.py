@@ -7,13 +7,13 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = env('SECRET_KEY', default=get_random_secret_key())
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
