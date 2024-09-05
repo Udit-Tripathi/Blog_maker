@@ -10,8 +10,7 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make the entrypoint script executable
-RUN chmod +x /app/entrypoint.sh
+
 
 # Expose port 8000
 EXPOSE 8000
@@ -24,5 +23,5 @@ ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
 ENV SECRET_KEY=${SECRET_KEY}
 ENV DEBUG=${DEBUG}
 
-# Run the entrypoint script
+
 ENTRYPOINT ["/app/entrypoint.sh"]
