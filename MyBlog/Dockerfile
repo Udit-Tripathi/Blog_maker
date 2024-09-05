@@ -1,9 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:alpine
-
-# Set environment variables
-ENV PYTHONUNBUFFERED 1
-ENV PORT 8080
+FROM python:3.11-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -17,8 +13,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make the entrypoint script executable
 RUN chmod +x /app/entrypoint.sh
 
-# Make port 8080 available to the world outside this container
-EXPOSE 8080
+# Expose port 8000
+EXPOSE 8000
+
+# Load environment variables from the .env file
+ENV DATABASE_HOST=${DATABASE_HOST}
+ENV DATABASE_NAME=${DATABASE_NAME}
+ENV DATABASE_USER=${DATABASE_USER}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV SECRET_KEY=${SECRET_KEY}
+ENV DEBUG=${DEBUG}
 
 # Run the entrypoint script
 ENTRYPOINT ["/app/entrypoint.sh"]
